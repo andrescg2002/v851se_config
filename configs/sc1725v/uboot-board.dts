@@ -108,6 +108,10 @@
 	burn_key = <0>;
 };
 
+&fastboot_key{
+	key_fel_type = "lradc";
+};
+
 &r_pio{
 
 	s_twi0_pins_a: s_twi0@0 {
