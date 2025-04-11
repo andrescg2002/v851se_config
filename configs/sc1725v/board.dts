@@ -21,13 +21,13 @@
 			wlan_hostwake = <&pio PE 7 14 0x1 0x2 0>;
 			chip_en;
 			power_en;
-			status        = "okay";
+			status        = "disabled";
 			wakeup-source;
 		};
 
 		vind0:vind@0 {
 			vind0_clk = <200000000>;
-			status = "okay";
+			status = "disabled";
 
 			csi2:csi@2 {
 				pinctrl-names = "default","sleep";
@@ -105,7 +105,7 @@
 				sensor0_sm_vs = <>;
 				flash_handle = <&flash0>;
 				act_handle = <&actuator0>;
-				status	= "okay";
+				status	= "disabled";
 			};
 
 			sensor1:sensor@1 {
@@ -146,7 +146,7 @@
 				vinc0_front_sensor_sel = <0>;
 				vinc0_sensor_list = <0>;
 				work_mode = <0x0>;
-				status = "okay";
+				status = "disabled";
 			};
 
 			vinc01:vinc@1 {
@@ -195,7 +195,7 @@
 				vinc4_front_sensor_sel = <0>;
 				vinc4_sensor_list = <0>;
 				work_mode = <0x0>;
-				status = "okay";
+				status = "disabled";
 			};
 
 			vinc11:vinc@5 {
@@ -244,7 +244,7 @@
 				vinc8_front_sensor_sel = <0>;
 				vinc8_sensor_list = <0>;
 				work_mode = <0x0>;
-				status = "okay";
+				status = "disabled";
 			};
 
 			vinc21:vinc@9 {
@@ -293,7 +293,7 @@
 				vinc12_front_sensor_sel = <0>;
 				vinc12_sensor_list = <0>;
 				work_mode = <0x0>;
-				status = "okay";
+				status = "disabled";
 			};
 
 			vinc31:vinc@13 {
@@ -337,6 +337,7 @@
 
 &npu {
 	clock-frequency = <348000000>;/*0.93V 348M*;  0.96V  348M */
+	 status = "disabled"; // Disable NPU
 };
 
 &uart0 {
@@ -961,15 +962,15 @@
 	pa-pin-msleep-0	= <0>;
 	tx-hub-en;
 	rx-sync-en;
-	status		= "okay";
+	status		= "disabled";
 };
 
 &codec_plat {
-	status		= "okay";
+	status		= "disabled";
 };
 
 &codec_mach {
-	status		= "okay";
+	status		= "disabled";
 	soundcard-mach,cpu {
 		sound-dai = <&codec_plat>;
 	};
@@ -1012,7 +1013,7 @@
 	/* pinctrl-1	= <&daudio0_pins_b>; */
 	tx-hub-en;
 	rx-sync-en;
-	status		= "okay";
+	status		= "disabled";
 };
 
 &daudio0_mach {
@@ -1023,7 +1024,7 @@
 	/* soundcard-mach,bitclock-inversion; */
 	soundcard-mach,slot-num		= <2>;
 	soundcard-mach,slot-width	= <32>;
-	status		= "okay";
+	status		= "disabled";
 	daudio0_cpu: soundcard-mach,cpu {
 		sound-dai = <&daudio0_plat>;
 		soundcard-mach,pll-fs	= <1>; /* pll freq = 24.576M or 22.5792M * pll-fs */
@@ -1230,7 +1231,7 @@
 	ctl-spec-caps = <0x8>;
 	pinctrl-0 = <&sdc1_pins_a>;
 	pinctrl-1 = <&sdc1_pins_b>;
-	status = "okay";
+	status = "disabled";
 };
 
 &cpu0 {
