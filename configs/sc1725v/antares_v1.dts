@@ -1,7 +1,7 @@
 /*
  * Allwinner Technology CO., Ltd. sun8iw21p1 soc board.
  *
- * Antares board configuration
+ * Custom board configuration for specific hardware design
  */
 
 /dts-v1/;
@@ -10,6 +10,85 @@
 
 /{
 	compatible = "allwinner,sun8iw21p1", "arm,sun8iw21p1", "allwinner,v851se";
+	
+	/* GPIO definitions for custom board */
+	gpio-leds {
+		compatible = "gpio-leds";
+		
+		led-yellow {
+			label = "yellow-led";
+			gpios = <&pio PF 1 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+		
+		led-green {
+			label = "green-led";
+			gpios = <&pio PF 4 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+		
+		led-red {
+			label = "red-led";
+			gpios = <&pio PF 6 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
+	
+	/* GPIO keys/inputs */
+	gpio-keys {
+		compatible = "gpio-keys";
+		
+		batt-chg-st1 {
+			label = "Battery Charge Status 1";
+			gpios = <&pio PE 0 GPIO_ACTIVE_HIGH>;
+			gpio-key,wakeup;
+		};
+		
+		main-reg-pg {
+			label = "Main Regulator Power Good";
+			gpios = <&pio PE 2 GPIO_ACTIVE_HIGH>;
+			gpio-key,wakeup;
+		};
+		
+		batt-chg-st2 {
+			label = "Battery Charge Status 2";
+			gpios = <&pio PE 5 GPIO_ACTIVE_HIGH>;
+			gpio-key,wakeup;
+		};
+		
+		pwr-path-st {
+			label = "Power Path Status";
+			gpios = <&pio PE 8 GPIO_ACTIVE_HIGH>;
+			gpio-key,wakeup;
+		};
+		
+		uc-attention {
+			label = "Microcontroller Attention";
+			gpios = <&pio PE 9 GPIO_ACTIVE_HIGH>;
+			gpio-key,wakeup;
+		};
+		
+		accel-int1 {
+			label = "Accelerometer Interrupt 1";
+			gpios = <&pio PH 0 GPIO_ACTIVE_HIGH>;
+			gpio-key,wakeup;
+		};
+		
+		accel-int2 {
+			label = "Accelerometer Interrupt 2";
+			gpios = <&pio PF 3 GPIO_ACTIVE_HIGH>;
+			gpio-key,wakeup;
+		};
+		
+		usb-detect {
+			label = "USB Device Detection";
+			gpios = <&pio PH 13 GPIO_ACTIVE_HIGH>;
+			gpio-key,wakeup;
+		};
+	};
+	
+	};
+
 	soc@03000000 {
 		/* Disable WLAN module */
 		wlan: wlan@0 {
@@ -101,8 +180,8 @@
 				sensor0_dvdd-supply = <>;
 				sensor0_dvdd_vol = <1200000>;
 				sensor0_power_en = <>;
-				sensor1_reset = <&pio PA 20 1 0 1 0>;
-				sensor1_pwdn = <&pio PA 21 1 0 1 0>;
+				sensor0_reset = <&pca9555 8 1 0 0 0>;
+				sensor0_pwdn = <&pca9555 9 1 0 0 0>;			
 				sensor0_sm_hs = <>;
 				sensor0_sm_vs = <>;
 				flash_handle = <&flash0>;
@@ -220,40 +299,6 @@
 		allwinner,muxsel = <1>;
 		allwinner,drive = <1>;
 		allwinner,pull = <0>;
-	};
-
-	/* GPIO LED pins configuration */
-	gpio_led_pins: gpio-led-pins@0 {
-		allwinner,pins = "PF1", "PF4", "PF6";
-		allwinner,function = "gpio_out";
-		allwinner,muxsel = <1>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-
-	/* GPIO input pins configuration (status signals) */
-	gpio_input_pins_e: gpio-input-e@0 {
-		allwinner,pins = "PE0", "PE2", "PE5", "PE8", "PE9";
-		allwinner,function = "gpio_in";
-		allwinner,muxsel = <0>;
-		allwinner,drive = <0>;
-		allwinner,pull = <1>; /* Pull-up for stable readings */
-	};
-
-	gpio_input_pins_f: gpio-input-f@0 {
-		allwinner,pins = "PF3";
-		allwinner,function = "gpio_in";
-		allwinner,muxsel = <0>;
-		allwinner,drive = <0>;
-		allwinner,pull = <1>; /* Pull-up for stable readings */
-	};
-
-	gpio_input_pins_h: gpio-input-h@0 {
-		allwinner,pins = "PH0", "PH13";
-		allwinner,function = "gpio_in";
-		allwinner,muxsel = <0>;
-		allwinner,drive = <0>;
-		allwinner,pull = <1>; /* Pull-up for stable readings */
 	};
 
 	/* UART0: Debug/main UART (PH9/PH10) */
@@ -426,21 +471,21 @@
 	status = "okay";
 	
 	/* Example accelerometer device - adjust according to your specific part */
-	// accelerometer@18 {
-	// 	compatible = "st,lis2dh12", "st,lis2dh";
-	// 	reg = <0x18>;
-	// 	interrupt-parent = <&pio>;
-	// 	interrupts = <PH 0 IRQ_TYPE_EDGE_RISING>, /* ACCEL_INT1 */
-	// 		     <PF 3 IRQ_TYPE_EDGE_RISING>; /* ACCEL_INT2 */
-	// 	status = "okay";
-	// };
+	accelerometer@18 {
+		compatible = "st,lis2dh12", "st,lis2dh";
+		reg = <0x18>;
+		interrupt-parent = <&pio>;
+		interrupts = <PH 0 IRQ_TYPE_EDGE_RISING>, /* ACCEL_INT1 */
+			     <PF 3 IRQ_TYPE_EDGE_RISING>; /* ACCEL_INT2 */
+		status = "okay";
+	};
 	
 	/* Example RTC device - adjust according to your specific part */
-	// rtc@68 {
-	// 	compatible = "dallas,ds1307";
-	// 	reg = <0x68>;
-	// 	status = "okay";
-	// };
+	rtc@68 {
+		compatible = "dallas,ds1307";
+		reg = <0x68>;
+		status = "okay";
+	};
 };
 
 /* Disable TWI3 - not used */
