@@ -425,22 +425,30 @@
 	twi_pkt_interval = <0>;
 	status = "okay";
 	
-	/* Example accelerometer device - adjust according to your specific part */
-	// accelerometer@18 {
-	// 	compatible = "st,lis2dh12", "st,lis2dh";
-	// 	reg = <0x18>;
-	// 	interrupt-parent = <&pio>;
-	// 	interrupts = <PH 0 IRQ_TYPE_EDGE_RISING>, /* ACCEL_INT1 */
-	// 		     <PF 3 IRQ_TYPE_EDGE_RISING>; /* ACCEL_INT2 */
-	// 	status = "okay";
-	// };
-	
-	/* Example RTC device - adjust according to your specific part */
-	// rtc@68 {
-	// 	compatible = "dallas,ds1307";
-	// 	reg = <0x68>;
-	// 	status = "okay";
-	// };
+	/* FRTC8563M - I2C RTC at 0x51 */
+	rtc@51 {
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+		status = "okay";
+	};
+
+	/* LIS2HH12TR - Accelerometer at 0x1e */
+	accelerometer@1e {
+		compatible = "st,lis2hh12";
+		reg = <0x1e>;
+		interrupt-parent = <&pio>;
+		interrupts = <PH 0 IRQ_TYPE_EDGE_RISING>, /* ACCEL_INT1 */
+			     <PF 3 IRQ_TYPE_EDGE_RISING>; /* ACCEL_INT2 */
+		interrupt-names = "INT1", "INT2";
+		status = "okay";
+	};
+
+	/* DS2482S - I2C to 1-Wire Bridge at 0x18 */
+	w1@18 {
+		compatible = "maxim,ds2482";
+		reg = <0x18>;
+		status = "okay";
+	};
 };
 
 /* Disable TWI3 - not used */
