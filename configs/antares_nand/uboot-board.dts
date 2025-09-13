@@ -1,7 +1,7 @@
 /*
  * Allwinner Technology CO., Ltd. sun8iw19p1 soc board.
  *
- * soc board support.
+ * ANTARES V851SE board support.
  */
 
 /{
@@ -16,7 +16,7 @@
 		pmukey_num = <0x0>;
 		led_power = <0x0>;
 		led_state = <0x0>;
-		pinctrl-0 = <&standby_blue>;
+		pinctrl-0 = <&standby_green>;
 		pinctrl-1 = <&standby_red>;
 	};
 	gpu: gpu@0x01800000 {
@@ -84,7 +84,6 @@
 
 &aliases {
 	spi0 = &spi0;
-	twi4=&twi4;
 };
 
 &platform {
@@ -94,33 +93,8 @@
 
 &target {
 	boot_clock = <900>;    /*CPU boot frequency, Unit: MHz*/
-	burn_key = <0>;
+	burn_key = <1>;
 };
-
-&fastboot_key{
-	key_fel_type = "lradc";
-};
-
-&r_pio{
-
-	s_twi0_pins_a: s_twi0@0 {
-		allwinner,pins = "PL0", "PL1";
-		allwinner,pname = "s_twi0_scl", "s_twi0_sda";
-		allwinner,function = "s_twi0";
-		allwinner,muxsel = <3>;
-		allwinner,drive = <1>;
-		allwinner,pull = <1>;
-	};
-
-	s_twi0_pins_b: s_twi0@1 {
-		allwinner,pins = "PL0", "PL1";
-		allwinner,function = "io_disabled";
-		allwinner,muxsel = <7>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-};
-
 
 &pio{
 	spi0_pins_a: spi0@0 {
@@ -131,7 +105,6 @@
 		allwinner,drive = <1>;
 		allwinner,pull = <0>;
 	};
-
 	spi0_pins_b: spi0@1 {
 		allwinner,pins = "PC1", "PC5", "PC4";
 		allwinner,pname = "spi0_cs0", "spi0_hold", "spi0_wp";
@@ -140,7 +113,6 @@
 		allwinner,drive = <1>;
 		allwinner,pull = <1>;   // only CS should be pulled up
 	};
-
 	spi0_pins_c: spi0@2 {
 		allwinner,pins = "PC0", "PC1", "PC2", "PC3", "PC4", "PC5";
 		allwinner,function = "io_disabled";
@@ -148,142 +120,16 @@
 		allwinner,drive = <1>;
 		allwinner,pull = <0>;
 	};
-
-	twi0_pins_a: twi0@0 {
-		allwinner,pins = "PA0", "PA1";
-		allwinner,pname = "twi0_scl", "twi0_sda";
-		allwinner,function = "twi0";
-		allwinner,muxsel = <4>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-
-	twi0_pins_b: twi0@1 {
-		allwinner,pins = "PA0", "PA1";
-		allwinner,function = "io_disabled";
-		allwinner,muxsel = <7>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-
-	twi1_pins_a: twi1@0 {
-		allwinner,pins = "PA2", "PA3";
-		allwinner,pname = "twi1_scl", "twi1_sda";
-		allwinner,function = "twi1";
-		allwinner,muxsel = <4>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-
-	twi1_pins_b: twi1@1 {
-		allwinner,pins = "PA2", "PA3";
-		allwinner,function = "io_disabled";
-		allwinner,muxsel = <7>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-
-	twi2_pins_a: twi2@0 {
-		allwinner,pins = "PE20", "PE21";
-		allwinner,pname = "twi2_scl", "twi2_sda";
-		allwinner,function = "twi2";
-		allwinner,muxsel = <5>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-
-	twi2_pins_b: twi2@1 {
-		allwinner,pins = "PE20", "PE21";
-		allwinner,function = "io_disabled";
-		allwinner,muxsel = <7>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-
-	twi3_pins_a: twi3@0 {
-		allwinner,pins = "PA10", "PA11";
-		allwinner,pname = "twi3_scl", "twi3_sda";
-		allwinner,function = "twi3";
-		allwinner,muxsel = <2>;
-		allwinner,drive = <1>;
-		allwinner,pull = <1>;
-	};
-
-	twi3_pins_b: twi3@1 {
-		allwinner,pins = "PA10", "PA11";
-		allwinner,function = "io_disabled";
-		allwinner,muxsel = <7>;
-		allwinner,drive = <1>;
-		allwinner,pull = <0>;
-	};
-
-	twi4_pins_a: twi4@0 {
-		allwinner,pins = "PI01", "PI02";
-		allwinner,pname = "twi4_scl", "twi4_sda";
-		allwinner,function = "twi4";
-		allwinner,muxsel = <6>;
-		allwinner,drive = <1>;
-		allwinner,pull = <1>;
-	};
-
-	twi4_pins_b: twi4@1 {
-		allwinner,pins = "PI01", "PI02";
-		allwinner,function = "io_disabled";
-		allwinner,muxsel = <0>;
-		allwinner,drive = <1>;
-		allwinner,pull = <1>;
-	};
-	sdc0_pins_a: sdc0@0 {
-		allwinner,pins = "PF0", "PF1", "PF2",
-				 "PF3", "PF4", "PF5";
-		allwinner,function = "sdc0";
-		allwinner,muxsel = <2>;
-		allwinner,drive = <3>;
-		allwinner,pull = <1>;
-	};
-	sdc1_pins_a: sdc1@0 {
-		allwinner,pins = "PG0", "PG1", "PG2",
-				 "PG3", "PG4", "PG5";
-		allwinner,function = "sdc1";
-		allwinner,muxsel = <2>;
-		allwinner,drive = <3>;
-		allwinner,pull = <1>;
-	};
-	sdc2_pins_a: sdc2@0 {
-		allwinner,pins = "PC0", "PC1", "PC2",
-				 "PC3", "PC4", "PC5", "PC6",
-				 "PC7", "PC8", "PC9", "PC11";
-		allwinner,function = "sdc2";
-		allwinner,muxsel = <3>;
-		allwinner,drive = <2>;
-		allwinner,pull = <1>;
-	};
-	sdc2_pins_b: sdc2@1 {
-		allwinner,pins = "PC0", "PC1", "PC2",
-				 "PC3", "PC4", "PC5", "PC6",
-				 "PC7", "PC8", "PC9", "PC10", "PC11";
-		allwinner,function = "io_disabled";
-		allwinner,muxsel = <7>;
-		allwinner,drive = <1>;
-		allwinner,pull = <1>;
-	};
-	sdc2_pins_c: sdc2@2 {
-		allwinner,pins = "PC10";
-		allwinner,function = "sdc2";
-		allwinner,muxsel = <3>;
-		allwinner,drive = <2>;
-		allwinner,pull = <2>;
-	};
 	standby_red: standby@0 {
-		allwinner,pins = "PH6";
+		allwinner,pins = "PF6";
 		allwinner,function = "gpio_out";
 		allwinner,muxsel = <1>;
 		allwinner,data = <1>;
 		allwinner,drive = <0>;
 		allwinner,pull = <0>;
 	};
-	standby_blue: standby@1 {
-		allwinner,pins = "PH7";
+	standby_green: standby@1 {
+		allwinner,pins = "PF4";
 		allwinner,function = "gpio_out";
 		allwinner,muxsel = <1>;
 		allwinner,data = <0>;
@@ -294,12 +140,7 @@
 
 
 &twi4 {
-	clock-frequency = <200000>;
-	pinctrl-0 = <&twi4_pins_a>;
-	pinctrl-1 = <&twi4_pins_b>;
-	no_suspend = <1>;
-	twi_drv_used = <1>;
-	status = "disabled";	
+	status = "disabled";
 };
 
 
@@ -311,7 +152,7 @@
 	spi_slave_mode = <0>;
 	spi_dbi_enable = <0>;
 	spi0_cs_number = <1>;
-	status = "okay";
+	status = "disabled";
 
 	spi_board0 {
 		device_type = "spi_board0";
@@ -331,32 +172,8 @@
 		reg = <0x0>;
 		spi-rx-bus-width=<0x01>;
 		spi-tx-bus-width=<0x01>;
-		status="okay";
+		status="disabled";
 	};
-};
-
-&card_boot {
-	sprite_gpio0 = <0x54 0x7 0x6 0x1 0xffffffff 0xffffffff 0x1>;
-};
-
-&card0_boot_para {  /* Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value */
-	/* reg = <0x0 0x2 0x0 0x0>;  [> Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value <] */
-	device_type = "card0_boot_para";
-	card_ctrl = <0x0>;
-	card_high_speed = <0x1>;
-	card_line = <0x4>;
-	pinctrl-0 = <&sdc0_pins_a>;
-};
-
-&card2_boot_para {  /* Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value */
-	/* reg = <0x0 0x3 0x0 0x0>;  [> Avoid dtc compiling warnings. @TODO: Developer should modify this to the actual value <] */
-	device_type = "card2_boot_para";
-	card_ctrl = <0x2>;
-	card_high_speed = <0x1>;
-	card_line = <0x8>;
-	pinctrl-0 = <&sdc2_pins_a &sdc2_pins_c>;
-	sdc_ex_dly_used = <0x2>;
-	sdc_io_1v8 = <0x0>;
 };
 
 

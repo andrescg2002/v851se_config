@@ -54,13 +54,13 @@ size = 4096
 
 [partition]
     name         = rootfs
-    size         = 18432
+    size         = 19200
     downloadfile = "rootfs.fex"
     user_type    = 0x8000
 
 [partition]
     name         = rootfs_data
-    size         = 102400
+    size         = 81920
     user_type    = 0x8000
 
 ;[partition]
@@ -73,10 +73,17 @@ size = 4096
 ;    size         = 512
 ;    user_type    = 0x8000
 ;
-;[partition]
-;    name         = private
-;    size         = 512
-;    user_type    = 0x8000
+[partition]
+    name         = private
+    size         = 512
+    user_type    = 0x8000
+    keydata     = 1
+    encrypt     = 1
+        
+[partition]
+    name         = userdata
+    size         = 512
+    user_type    = 0x8000    
 
 [partition]
     name         = UDISK

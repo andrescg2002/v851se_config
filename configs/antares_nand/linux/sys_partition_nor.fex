@@ -47,7 +47,7 @@ size = 16
 
 [partition]
     name         = rootfs
-    size         = 10240
+    size         = 19456
     downloadfile = "rootfs.fex"
     user_type    = 0x8000
 
@@ -59,7 +59,7 @@ size = 16
 
 [partition]
     name         = rootfs_data
-    size         = 8704
+    size         = 1024
     user_type    = 0x8000
 
 [partition]
@@ -68,6 +68,13 @@ size = 16
    downloadfile = "env_nor.fex"
    user_type    = 0x8000
 
+[partition]
+    name         = private
+    size         = 512
+    user_type    = 0x8000
+    keydata     = 1
+    encrypt     = 1
+    
 ;[partition]
 ;   name         = misc
 ;   size         = 128
