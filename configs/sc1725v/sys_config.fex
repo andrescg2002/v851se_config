@@ -38,10 +38,13 @@ aldo3_vol                  = 3000
 ;grain_size=3电压公式：sys_vol = 500mV + vol * 100mV
 ;----------------------------------------------------------------------------------
 [target]
-storage_type    = 3
+storage_type    = 5
 nand_use_ubi	= 1
 power_mode      = 0
+burn_key = 1
 
+[platform]
+debug_mode = 4
 
 [card_boot]
 logical_start   = 40960
@@ -90,9 +93,9 @@ spi0_hold           = port:PC05<4><0><2><default>
 
 [twi_para]
 twi_used	= 1
-twi_port        = 4
-twi_scl         = port:PI01<6><1><default><default>
-twi_sda         = port:PI02<6><1><default><default>
+twi_port        = 2
+twi_scl         = port:PH11<6><1><default><default>
+twi_sda         = port:PH12<6><1><default><default>
 
 [uart_para]
 uart_debug_port = 0

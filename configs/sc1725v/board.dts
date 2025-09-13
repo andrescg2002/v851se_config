@@ -13,17 +13,7 @@
 	soc@03000000 {
 		/* Disable WLAN module */
 		wlan: wlan@0 {
-			compatible    = "allwinner,sunxi-wlan";
-			pinctrl-names = "default";
-			clock-names = "32k-fanout0";
-			clocks        = <&clk_fanout0>;
-			wlan_busnum    = <0x1>;
-			wlan_regon    = <&pio PE 6 1 0x1 0x2 0>;
-			wlan_hostwake = <&pio PE 7 14 0x1 0x2 0>;
-			chip_en;
-			power_en;
-			status        = "disabled";
-			wakeup-source;
+			status = "disabled";
 		};
 
 		/* Disable video input subsystem - not used */
@@ -213,7 +203,7 @@
 		allwinner,drive = <1>;
 		allwinner,pull = <0>;
 	};
-	
+
 	gpio_control_pins_e: gpio-control-e@0 {
 		allwinner,pins = "PE3", "PE4", "PE11";
 		allwinner,function = "gpio_out";
@@ -249,11 +239,19 @@
 	};
 
 	gpio_input_pins_h: gpio-input-h@0 {
-		allwinner,pins = "PH0", "PH13";
+		allwinner,pins = "PH0";
 		allwinner,function = "gpio_in";
 		allwinner,muxsel = <0>;
 		allwinner,drive = <0>;
 		allwinner,pull = <1>; /* Pull-up for stable readings */
+	};
+
+	usb_vbus_pins: usb-vbus@0 {
+    allwinner,pins = "PH13";
+    allwinner,function = "gpio_in";
+    allwinner,muxsel = <0>;
+    allwinner,drive = <0>;
+    allwinner,pull = <1>; /* Pull-up for VBUS detection */
 	};
 
 	/* UART0: Debug/main UART (PH9/PH10) */
@@ -275,7 +273,7 @@
 	uart1_pins_active: uart1@0 {
 		allwinner,pins = "PE6", "PE7";
 		allwinner,function = "uart1";
-		allwinner,muxsel = <4>;
+		allwinner,muxsel = <6>;
 		allwinner,drive = <1>;
 		allwinner,pull = <1>;
 	};
@@ -347,9 +345,9 @@
 		allwinner,pins = "PH11", "PH12";
 		allwinner,pname = "twi2_scl", "twi2_sda";
 		allwinner,function = "twi2";
-		allwinner,muxsel = <6>;
+		allwinner,muxsel = <5>;
 		allwinner,drive = <0>;
-		allwinner,pull = <1>;
+		allwinner,pull = <0>;
 	};
 
 	twi2_pins_b: twi2@1 {
@@ -416,7 +414,7 @@
 
 /* TWI2: Enable for Microcontroller, Accelerometer, RTC and 1Wire */
 &twi2 {
-	clock-frequency = <400000>;
+	clock-frequency = <100000>;
 	pinctrl-0 = <&twi2_pins_a>;
 	pinctrl-1 = <&twi2_pins_b>;
 	pinctrl-names = "default", "sleep";
@@ -424,7 +422,7 @@
 	twi_drv_used = <0>;
 	twi_pkt_interval = <0>;
 	status = "okay";
-	
+
 	/* FRTC8563M - I2C RTC at 0x51 */
 	rtc@51 {
 		compatible = "nxp,pcf8563";
@@ -433,22 +431,22 @@
 	};
 
 	/* LIS2HH12TR - Accelerometer at 0x1e */
-	accelerometer@1e {
-		compatible = "st,lis2hh12";
-		reg = <0x1e>;
-		interrupt-parent = <&pio>;
-		interrupts = <PH 0 IRQ_TYPE_EDGE_RISING>, /* ACCEL_INT1 */
-			     <PF 3 IRQ_TYPE_EDGE_RISING>; /* ACCEL_INT2 */
-		interrupt-names = "INT1", "INT2";
-		status = "okay";
-	};
+	// accelerometer@1e {
+	// 	compatible = "st,lis2hh12";
+	// 	reg = <0x1e>;
+	// 	interrupt-parent = <&pio>;
+	// 	interrupts = <PH 0 IRQ_TYPE_EDGE_RISING>, /* ACCEL_INT1 */
+	// 		     <PF 3 IRQ_TYPE_EDGE_RISING>; /* ACCEL_INT2 */
+	// 	interrupt-names = "INT1", "INT2";
+	// 	status = "okay";
+	// };
 
 	/* DS2482S - I2C to 1-Wire Bridge at 0x18 */
-	w1@18 {
-		compatible = "maxim,ds2482";
-		reg = <0x18>;
-		status = "okay";
-	};
+	// w1@18 {
+	// 	compatible = "maxim,ds2482";
+	// 	reg = <0x18>;
+	// 	status = "okay";
+	// };
 };
 
 /* Disable TWI3 - not used */
@@ -500,14 +498,18 @@
 	status = "disabled";
 };
 
-/* USB configuration - Enable USB interface */
+/* USB configuration - Enable USB interface as HOST mode */
 &usbc0 {
 	device_type = "usbc0";
 	usb_port_type = <0x01>;
-	usb_detect_type = <0x0>;
+	usb_detect_type = <0x1>;
 	usb_detect_mode = <0x01>;
-	//usb_id_gpio;
+	usb_id_gpio;
 	usb_det_vbus_gpio;
+	usb_force_interface = <0x01>;   /* Force interface: 1=host, 0=device (if supported) */
+	usb_det_vbus_gpio = <&pio PH 13 0 1 2 0>; /* PH13 for VBUS detection */
+	pinctrl-names = "default";
+    pinctrl-0 = <&usb_vbus_pins>;
 	usb_regulator_io = "nocare";
 	usb_wakeup_suspend = <0x0>;
 	usb_luns = <0x3>;
@@ -516,12 +518,28 @@
 	status = "okay";
 };
 
+&ehci0 {
+    status = "okay";
+};
+
+&ohci0 {
+    status = "okay";
+};
+
 &udc {
-	status = "okay";
+	status = "disabled";
 };
 
 /* Disable PWM modules - not used */
 &pwm4 {
+	status = "disabled";
+};
+
+&pwm6 {
+	status = "disabled";
+};
+
+&pwm7 {
 	status = "disabled";
 };
 
