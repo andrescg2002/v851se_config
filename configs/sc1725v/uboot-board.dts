@@ -1,7 +1,7 @@
 /*
  * Allwinner Technology CO., Ltd. sun8iw19p1 soc board.
  *
- * soc board support.
+ * ANTARES V851SE board support.
  */
 
 /{
@@ -16,7 +16,7 @@
 		pmukey_num = <0x0>;
 		led_power = <0x0>;
 		led_state = <0x0>;
-		pinctrl-0 = <&standby_blue>;
+		pinctrl-0 = <&standby_green>;
 		pinctrl-1 = <&standby_red>;
 	};
 	gpu: gpu@0x01800000 {
@@ -83,7 +83,7 @@
 };
 
 &aliases {
-	spi0 = &spi0;	
+	spi0 = &spi0;
 };
 
 &platform {
@@ -93,7 +93,7 @@
 
 &target {
 	boot_clock = <900>;    /*CPU boot frequency, Unit: MHz*/
-	burn_key = <0>;
+	burn_key = <1>;
 };
 
 &pio{
@@ -119,7 +119,7 @@
 		allwinner,muxsel = <7>;
 		allwinner,drive = <1>;
 		allwinner,pull = <0>;
-	};	
+	};
 	standby_red: standby@0 {
 		allwinner,pins = "PF6";
 		allwinner,function = "gpio_out";
@@ -128,7 +128,7 @@
 		allwinner,drive = <0>;
 		allwinner,pull = <0>;
 	};
-	standby_blue: standby@1 {
+	standby_green: standby@1 {
 		allwinner,pins = "PF4";
 		allwinner,function = "gpio_out";
 		allwinner,muxsel = <1>;
@@ -140,7 +140,7 @@
 
 
 &twi4 {
-	status = "disabled";	
+	status = "disabled";
 };
 
 
