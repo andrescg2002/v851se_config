@@ -296,23 +296,23 @@
 		status = "okay";
 	};
 
-	/* LIS2HH12TR - Accelerometer at 0x1e */
-	// accelerometer@1e {
-	// 	compatible = "st,lis2hh12";
-	// 	reg = <0x1e>;
-	// 	interrupt-parent = <&pio>;
-	// 	interrupts = <PH 0 IRQ_TYPE_EDGE_RISING>, /* ACCEL_INT1 */
-	// 		     <PF 3 IRQ_TYPE_EDGE_RISING>; /* ACCEL_INT2 */
-	// 	interrupt-names = "INT1", "INT2";
-	// 	status = "okay";
-	// };
+	/* LIS2DH12TR - Accelerometer at 0x18 */
+	accelerometer@18 {
+		compatible = "st,lis2dh12-accel";
+		reg = <0x18>;
+		interrupt-parent = <&pio>;
+		interrupts = <PH 0 IRQ_TYPE_EDGE_RISING>, /* ACCEL_INT1 */
+			         <PF 3 IRQ_TYPE_EDGE_RISING>; /* ACCEL_INT2 */
+		interrupt-names = "INT1", "INT2";
+		status = "okay";
+	};
 
-	/* DS2482S - I2C to 1-Wire Bridge at 0x18 */
-	// w1@18 {
-	// 	compatible = "maxim,ds2482";
-	// 	reg = <0x18>;
-	// 	status = "okay";
-	// };
+	/* DS2482S - I2C to 1-Wire Bridge at 0x19 */
+	w1@19 {
+		compatible = "maxim,ds2482";
+		reg = <0x19>;
+		status = "okay";
+	};
 };
 
 /* Disable TWI3 - not used */
