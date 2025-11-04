@@ -39,20 +39,19 @@
 };
 
 &power_sply {
-	dcdc1_vol = <1003300>;
-	dcdc2_vol = <1000900>;
-	dcdc5_vol = <1200>;
-	aldo1_vol = <1001800>;
-	aldo2_vol = <1001800>;
-	aldo3_vol = <1003300>;
-	aldo4_vol = <1003300>;
-	bldo1_vol = <1001800>;
-	bldo2_vol = <1002800>;
-	dldo1_vol = <1003300>;
-	dldo2_vol = <1001200>;
+	status = "disabled";
 };
 
- &sunxi_flashmap {
+/* Disable display subsystem */
+&disp {
+    status = "disabled";
+};
+
+&lcd0 {
+    status = "disabled";
+};
+
+&sunxi_flashmap {
     /* Unit: Sector */
 	sdmmc_map {
 		logic_offset = <40960>;
@@ -89,6 +88,7 @@
 &platform {
 	eraseflag = <1>;
 	debug_mode = <4>;
+	burn_key = <0>;
 };
 
 &target {
