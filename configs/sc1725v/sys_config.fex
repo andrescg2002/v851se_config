@@ -1,11 +1,13 @@
 ;---------------------------------------------------------------------------------------------------------
-; 说明： 脚本中的字符串区分大小写，用户可以修改"="后面的数值，但是不要修改前面的字符串
-; 描述gpio的形式：Port:端口+组内序号<功能分配><内部电阻状态><驱动能力><输出电平状态>
+; Antares V851S minimal configuration
+; - No PMIC (fixed voltage rails)
+; - No LCD or HDMI
+; - SPI-NAND boot
 ;---------------------------------------------------------------------------------------------------------
 
 [product]
 version = "100"
-machine = "evb"
+machine = "antares_v851se"
 
 ;----------------------------------------------------------------------------------
 ;   system configuration
@@ -28,24 +30,21 @@ aldo2_vol                  = 1800
 aldo3_vol                  = 3000
 
 ;----------------------------------------------------------------------------------
-;		   7-6 bit   5-0 bit
-;power_mode	= grain_size|vol 设置系统电压，=0则不设置，范围900~1200mV
-;grain_size     = 电压粒度  0:10mV  1:20mV  2:50mV  3:100mV
-;vol		= 电压系数 =0则不设置
-;grain_size=0电压公式：sys_vol = 500mV + vol * 10mV
-;grain_size=1电压公式：sys_vol = 500mV + vol * 20mV
-;grain_size=2电压公式：sys_vol = 500mV + vol * 50mV
-;grain_size=3电压公式：sys_vol = 500mV + vol * 100mV
+; Target / platform configuration
 ;----------------------------------------------------------------------------------
 [target]
 storage_type    = 5
 nand_use_ubi	= 1
 power_mode      = 0
-burn_key = 1
+burn_key        = 1
 
 [platform]
-debug_mode = 4
+debug_mode  = 4
+eraseflag   = 1
 
+;----------------------------------------------------------------------------------
+; Boot card configs (you can leave them unchanged if not using SD/eMMC)
+;----------------------------------------------------------------------------------
 [card_boot]
 logical_start   = 40960
 sprite_gpio0    =
@@ -91,8 +90,11 @@ spi0_miso           = port:PC03<4><0><2><default>
 spi0_wp             = port:PC04<4><0><2><default>
 spi0_hold           = port:PC05<4><0><2><default>
 
+;----------------------------------------------------------------------------------
+; Disable unused buses and peripherals
+;----------------------------------------------------------------------------------
 [twi_para]
-twi_used	= 1
+twi_used	    = 0
 twi_port        = 2
 twi_scl         = port:PH11<6><1><default><default>
 twi_sda         = port:PH12<6><1><default><default>
@@ -110,8 +112,7 @@ jtag_do         = port:PH11<3><default><default><default>
 jtag_di         = port:PH12<3><default><default><default>
 
 ;*****************************************************************************
-;sdram configuration
-;
+; SDRAM configuration
 ;*****************************************************************************
 [dram_para]
 
@@ -139,5 +140,3 @@ dram_tpr10      = 0x00000000
 dram_tpr11      = 0x00000022
 dram_tpr12      = 0x00000077
 dram_tpr13      = 0x34000100
-
-
