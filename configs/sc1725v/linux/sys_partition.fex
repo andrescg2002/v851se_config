@@ -60,7 +60,7 @@ size = 4096
 
 [partition]
     name         = rootfs_data
-    size         = 16384
+    size         = 32768
     user_type    = 0x8000
 
 [partition]
